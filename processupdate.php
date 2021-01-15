@@ -1,0 +1,39 @@
+<?php
+session_start();
+if(isset($_SESSION['username']))
+{
+    if($_SESSION['user_level']==1 && isset($_GET['user']))
+    {
+        $username=$_GET['user'];
+        $url="update.php?user=$username";
+    }
+    else
+    {
+        $username=$_SESSION['username'];
+        $url="update.php";
+    }
+    $fname=$_POST['fname'];
+    $lname=$_POST['lname'];
+    $class=$_POST['class'];
+    $addr1=$_POST['addr1'];
+    $addr2=$_POST['addr2'];
+    $city=$_POST['city'];
+    $coun=$_POST['coun'];
+    $zcode=$_POST['zcode'];
+    $phone=$_POST['phone'];
+    include('db/connect.php');
+    $sql="update user set first_name='$fname',last_name='$lname',class='$class',address1='$addr1',address2='$addr2',city='$city',state_country='$coun',zip_code='$zcode',phone='$phone' where username='$username'";
+    $res=mysqli_query($conn,$sql);
+    if($res)
+    {
+        header("location:$url");
+    }
+    else
+    {
+        echo"an error,please try again !";
+    }
+}
+else
+{
+    header("location:index.php");
+}
